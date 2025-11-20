@@ -243,11 +243,11 @@ const Resources = () => {
         <h2 className="text-xl font-semibold mb-4">其他實用資源</h2>
         <div className="grid md:grid-cols-2 gap-4">
           <button
-            onClick={() => handleLinkClick('https://www.commonhealth.com.tw/channel/category/4')}
+            onClick={() => handleLinkClick('https://www.commonhealth.com.tw/article/89302')}
             className="bg-white/50 rounded-xl p-4 hover:shadow-lg transition-all text-left"
           >
-            <h3 className="font-semibold mb-2">康健雜誌 - 心靈健康專區</h3>
-            <p className="text-sm text-gray-600 mb-2">專業的心理健康文章和最新研究</p>
+            <h3 className="font-semibold mb-2">康健雜誌 - 情緒管理專區</h3>
+            <p className="text-sm text-gray-600 mb-2">情緒管理與心理健康的專業文章</p>
             <ExternalLink className="w-4 h-4 text-gray-400" />
           </button>
 
@@ -270,11 +270,11 @@ const Resources = () => {
           </button>
 
           <button
-            onClick={() => handleLinkClick('https://www.mohw.gov.tw/cp-16-38547-1.html')}
+            onClick={() => handleLinkClick('https://dep.mohw.gov.tw/DOMHAOH/np-326-107.html')}
             className="bg-white/50 rounded-xl p-4 hover:shadow-lg transition-all text-left"
           >
-            <h3 className="font-semibold mb-2">衛福部心理健康資源</h3>
-            <p className="text-sm text-gray-600 mb-2">政府提供的完整心理健康資訊</p>
+            <h3 className="font-semibold mb-2">衛福部心理健康促進專區</h3>
+            <p className="text-sm text-gray-600 mb-2">心理健康司官方網站，提供完整心理健康資訊</p>
             <ExternalLink className="w-4 h-4 text-gray-400" />
           </button>
         </div>
