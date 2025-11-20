@@ -60,15 +60,17 @@ export async function getUserData(username) {
 export async function saveMoodEntry(username, entry) {
   try {
     const sortKey = `mood#${entry.id}`
+    const item = {
+      'sortKey': sortKey,
+      dataType: 'mood',
+      ...entry,
+      createdAt: new Date().toISOString()
+    }
+    item[PARTITION_KEY] = username  // 使用括號語法設置帶空格的屬性名
+
     const command = new PutCommand({
       TableName: TABLE_NAME,
-      Item: {
-        [PARTITION_KEY]: username,
-        'sortKey': sortKey,
-        dataType: 'mood',
-        ...entry,
-        createdAt: new Date().toISOString()
-      }
+      Item: item
     })
 
     await docClient.send(command)
@@ -85,15 +87,17 @@ export async function saveMoodEntry(username, entry) {
 export async function saveJournalEntry(username, entry) {
   try {
     const sortKey = `journal#${entry.id}`
+    const item = {
+      'sortKey': sortKey,
+      dataType: 'journal',
+      ...entry,
+      createdAt: new Date().toISOString()
+    }
+    item[PARTITION_KEY] = username  // 使用括號語法設置帶空格的屬性名
+
     const command = new PutCommand({
       TableName: TABLE_NAME,
-      Item: {
-        [PARTITION_KEY]: username,
-        'sortKey': sortKey,
-        dataType: 'journal',
-        ...entry,
-        createdAt: new Date().toISOString()
-      }
+      Item: item
     })
 
     await docClient.send(command)
@@ -111,16 +115,18 @@ export async function saveMeditationLog(username, log) {
   try {
     const logId = log.id || Date.now()
     const sortKey = `meditation#${logId}`
+    const item = {
+      'sortKey': sortKey,
+      dataType: 'meditation',
+      ...log,
+      id: logId,
+      createdAt: new Date().toISOString()
+    }
+    item[PARTITION_KEY] = username  // 使用括號語法設置帶空格的屬性名
+
     const command = new PutCommand({
       TableName: TABLE_NAME,
-      Item: {
-        [PARTITION_KEY]: username,
-        'sortKey': sortKey,
-        dataType: 'meditation',
-        ...log,
-        id: logId,
-        createdAt: new Date().toISOString()
-      }
+      Item: item
     })
 
     await docClient.send(command)
@@ -137,15 +143,17 @@ export async function saveMeditationLog(username, log) {
 export async function saveUser(username) {
   try {
     const sortKey = 'user#profile'
+    const item = {
+      'sortKey': sortKey,
+      dataType: 'user',
+      joinedDate: new Date().toISOString(),
+      createdAt: new Date().toISOString()
+    }
+    item[PARTITION_KEY] = username  // 使用括號語法設置帶空格的屬性名
+
     const command = new PutCommand({
       TableName: TABLE_NAME,
-      Item: {
-        [PARTITION_KEY]: username,
-        'sortKey': sortKey,
-        dataType: 'user',
-        joinedDate: new Date().toISOString(),
-        createdAt: new Date().toISOString()
-      }
+      Item: item
     })
 
     await docClient.send(command)
@@ -163,12 +171,14 @@ export async function deleteEntry(username, dataType, id) {
   try {
     const { DeleteCommand } = await import('@aws-sdk/lib-dynamodb')
     const sortKey = `${dataType}#${id}`
+    const key = {
+      'sortKey': sortKey
+    }
+    key[PARTITION_KEY] = username  // 使用括號語法設置帶空格的屬性名
+
     const command = new DeleteCommand({
       TableName: TABLE_NAME,
-      Key: {
-        [PARTITION_KEY]: username,
-        'sortKey': sortKey
-      }
+      Key: key
     })
 
     await docClient.send(command)
