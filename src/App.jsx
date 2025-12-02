@@ -8,6 +8,7 @@ import Meditation from './pages/Meditation'
 import Journal from './pages/Journal'
 import Dashboard from './pages/Dashboard'
 import Resources from './pages/Resources'
+import Quiz from './pages/Quiz'
 import { registerUser } from './services/api'
 
 function App() {
@@ -39,6 +40,10 @@ function App() {
   return (
     <Router>
       <Routes>
+        {/* 心理健康測驗（獨立頁面，不需登入） */}
+        <Route path="/quiz" element={<Quiz />} />
+
+        {/* 主應用路由 */}
         <Route path="/" element={user ? <Layout user={user} /> : <Home onLogin={handleLogin} />}>
           <Route index element={<Navigate to="/dashboard" replace />} />
           <Route path="dashboard" element={<Dashboard user={user} />} />

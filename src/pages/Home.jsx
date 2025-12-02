@@ -1,7 +1,9 @@
 import React, { useState } from 'react'
-import { Heart, Sparkles, Brain, Moon, BookHeart, TrendingUp } from 'lucide-react'
+import { useNavigate } from 'react-router-dom'
+import { Heart, Sparkles, Brain, Moon, BookHeart, TrendingUp, ClipboardCheck } from 'lucide-react'
 
 const Home = ({ onLogin }) => {
+  const navigate = useNavigate()
   const [username, setUsername] = useState('')
 
   const handleSubmit = (e) => {
@@ -60,6 +62,34 @@ const Home = ({ onLogin }) => {
           <p className="text-xl text-gray-600 mb-8">
             你的個人心靈健康夥伴 · 隨時陪伴，用心守護
           </p>
+
+          {/* Quiz CTA - 醒目的測驗入口 */}
+          <div className="max-w-md mx-auto mb-8">
+            <button
+              onClick={() => navigate('/quiz')}
+              className="w-full group relative overflow-hidden rounded-2xl p-1 bg-gradient-to-r from-pink-500 via-purple-500 to-blue-500 hover:shadow-2xl transition-all duration-300 hover:scale-105"
+            >
+              <div className="relative bg-white rounded-xl p-6 flex items-center gap-4">
+                <div className="w-16 h-16 bg-gradient-to-br from-pink-400 to-purple-500 rounded-xl flex items-center justify-center flex-shrink-0 animate-pulse">
+                  <ClipboardCheck className="w-8 h-8 text-white" />
+                </div>
+                <div className="text-left flex-1">
+                  <div className="flex items-center gap-2 mb-1">
+                    <span className="text-2xl">✨</span>
+                    <h3 className="text-lg font-bold bg-gradient-to-r from-pink-500 to-purple-500 bg-clip-text text-transparent">
+                      馬上測測您的心理健康
+                    </h3>
+                  </div>
+                  <p className="text-sm text-gray-600">
+                    只要 2 分鐘，了解自己的心靈狀態！
+                  </p>
+                </div>
+                <div className="text-3xl group-hover:translate-x-1 transition-transform">
+                  👉
+                </div>
+              </div>
+            </button>
+          </div>
 
           {/* Login Form */}
           <form onSubmit={handleSubmit} className="max-w-md mx-auto glass-card p-8 mb-12">
