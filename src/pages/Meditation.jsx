@@ -1,7 +1,9 @@
 import React, { useState, useEffect, useRef } from 'react'
 import { Play, Pause, RotateCcw, Wind, Heart, Sparkles } from 'lucide-react'
+import { useTranslation } from '../hooks/useTranslation'
 
 const Meditation = () => {
+  const { t } = useTranslation()
   const [isActive, setIsActive] = useState(false)
   const [timeLeft, setTimeLeft] = useState(300) // 5 minutes default
   const [selectedDuration, setSelectedDuration] = useState(300)
@@ -10,10 +12,10 @@ const Meditation = () => {
   const breathIntervalRef = useRef(null)
 
   const durations = [
-    { label: '3 分鐘', value: 180 },
-    { label: '5 分鐘', value: 300 },
-    { label: '10 分鐘', value: 600 },
-    { label: '15 分鐘', value: 900 },
+    { label: t('meditation.durations.3min'), value: 180 },
+    { label: t('meditation.durations.5min'), value: 300 },
+    { label: t('meditation.durations.10min'), value: 600 },
+    { label: t('meditation.durations.15min'), value: 900 },
   ]
 
   useEffect(() => {
@@ -72,7 +74,7 @@ const Meditation = () => {
       duration: selectedDuration / 60
     })
     localStorage.setItem(`meditation-log-${user.username}`, JSON.stringify(sessions))
-    alert('恭喜完成冥想！🎉')
+    alert(t('meditation.complete'))
   }
 
   const formatTime = (seconds) => {
@@ -83,12 +85,14 @@ const Meditation = () => {
 
   const getBreathInstruction = () => {
     switch (breathPhase) {
-      case 'inhale': return '深深吸氣...'
-      case 'hold': return '屏住呼吸...'
-      case 'exhale': return '慢慢吐氣...'
+      case 'inhale': return t('meditation.breathe.inhale')
+      case 'hold': return t('meditation.breathe.hold')
+      case 'exhale': return t('meditation.breathe.exhale')
       default: return ''
     }
   }
+
+  const guidedItems = t('meditation.guidedItems')
 
   return (
     <div className="space-y-6">
@@ -96,9 +100,9 @@ const Meditation = () => {
       <div className="glass-card p-6">
         <div className="flex items-center gap-3 mb-2">
           <Wind className="w-8 h-8 text-mindful-blue" />
-          <h1 className="text-3xl font-bold">冥想與呼吸</h1>
+          <h1 className="text-3xl font-bold">{t('meditation.title')}</h1>
         </div>
-        <p className="text-gray-600">放鬆身心，找回內在的平靜</p>
+        <p className="text-gray-600">{t('meditation.subtitle')}</p>
       </div>
 
       {/* Main Meditation Area */}
@@ -127,7 +131,7 @@ const Meditation = () => {
           {/* Duration Selection */}
           {!isActive && (
             <div className="mb-6">
-              <p className="text-sm font-medium mb-3">選擇時長</p>
+              <p className="text-sm font-medium mb-3">{t('meditation.selectDuration')}</p>
               <div className="grid grid-cols-4 gap-2">
                 {durations.map(duration => (
                   <button
@@ -154,17 +158,17 @@ const Meditation = () => {
             {!isActive ? (
               <button onClick={handleStart} className="btn-primary px-8">
                 <Play className="w-5 h-5 inline mr-2" />
-                開始
+                {t('meditation.start')}
               </button>
             ) : (
               <>
                 <button onClick={handlePause} className="btn-secondary px-8">
                   <Pause className="w-5 h-5 inline mr-2" />
-                  暫停
+                  {t('meditation.pause')}
                 </button>
                 <button onClick={handleReset} className="btn-secondary px-8">
                   <RotateCcw className="w-5 h-5 inline mr-2" />
-                  重置
+                  {t('meditation.reset')}
                 </button>
               </>
             )}
@@ -176,35 +180,10 @@ const Meditation = () => {
       <div className="glass-card p-6">
         <h2 className="text-xl font-semibold mb-4 flex items-center gap-2">
           <Sparkles className="w-6 h-6" />
-          引導式冥想
+          {t('meditation.guided')}
         </h2>
         <div className="grid md:grid-cols-2 gap-4">
-          {[
-            {
-              title: '早晨喚醒',
-              description: '以平靜的心情開始新的一天',
-              duration: '5 分鐘',
-              icon: '🌅'
-            },
-            {
-              title: '壓力釋放',
-              description: '釋放緊張，恢復內在平衡',
-              duration: '10 分鐘',
-              icon: '🌊'
-            },
-            {
-              title: '深度放鬆',
-              description: '全身心的放鬆與療癒',
-              duration: '15 分鐘',
-              icon: '🌙'
-            },
-            {
-              title: '感恩練習',
-              description: '培養感恩的心態',
-              duration: '7 分鐘',
-              icon: '💝'
-            }
-          ].map((meditation, index) => (
+          {guidedItems.map((meditation, index) => (
             <div key={index} className="bg-white/50 rounded-xl p-4 hover:shadow-lg transition-all cursor-pointer">
               <div className="text-3xl mb-2">{meditation.icon}</div>
               <h3 className="font-semibold mb-1">{meditation.title}</h3>
@@ -219,14 +198,12 @@ const Meditation = () => {
       <div className="glass-card p-6 bg-gradient-to-r from-mindful-blue/20 to-mindful-green/20">
         <h3 className="font-semibold mb-3 flex items-center gap-2">
           <Heart className="w-5 h-5 text-mindful-pink" />
-          冥想小貼士
+          {t('meditation.tips.title')}
         </h3>
         <ul className="space-y-2 text-sm text-gray-700">
-          <li>• 找一個安靜舒適的地方</li>
-          <li>• 保持舒適的坐姿或躺姿</li>
-          <li>• 專注於你的呼吸</li>
-          <li>• 不要強迫自己，順其自然</li>
-          <li>• 每天堅持練習，效果會更好</li>
+          {t('meditation.tips.items').map((tip, index) => (
+            <li key={index}>• {tip}</li>
+          ))}
         </ul>
       </div>
     </div>

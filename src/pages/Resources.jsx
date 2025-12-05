@@ -1,10 +1,13 @@
 import React from 'react'
 import { BookOpen, Headphones, Video, ExternalLink, Heart } from 'lucide-react'
+import { useTranslation } from '../hooks/useTranslation'
 
 const Resources = () => {
-  const resources = [
+  const { t, language } = useTranslation()
+
+  const resources = language === 'zh-TW' ? [
     {
-      category: '文章',
+      category: t('resources.categories.articles'),
       icon: BookOpen,
       color: 'from-mindful-purple to-mindful-blue',
       items: [
@@ -31,7 +34,7 @@ const Resources = () => {
       ]
     },
     {
-      category: '音頻',
+      category: t('resources.categories.audio'),
       icon: Headphones,
       color: 'from-mindful-blue to-mindful-green',
       items: [
@@ -58,7 +61,7 @@ const Resources = () => {
       ]
     },
     {
-      category: '影片',
+      category: t('resources.categories.videos'),
       icon: Video,
       color: 'from-mindful-green to-mindful-pink',
       items: [
@@ -84,30 +87,131 @@ const Resources = () => {
         }
       ]
     }
-  ]
-
-  const helplines = [
+  ] : [
     {
-      name: '全國自殺防治專線',
-      number: '1925',
-      description: '24小時免費諮詢服務',
-      link: 'https://www.mohw.gov.tw/cp-88-237-1.html'
+      category: t('resources.categories.articles'),
+      icon: BookOpen,
+      color: 'from-mindful-purple to-mindful-blue',
+      items: [
+        {
+          title: 'NIMH - National Institute of Mental Health',
+          description: 'Official US government resource for mental health information and research.',
+          link: 'https://www.nimh.nih.gov/'
+        },
+        {
+          title: 'Mental Health America',
+          description: 'Comprehensive mental health resources, screening tools, and support information.',
+          link: 'https://www.mhanational.org/'
+        },
+        {
+          title: 'Psychology Today',
+          description: 'Articles on mental health, therapy finder, and expert advice.',
+          link: 'https://www.psychologytoday.com/'
+        },
+        {
+          title: 'Mind (UK)',
+          description: 'Mental health charity providing advice and support.',
+          link: 'https://www.mind.org.uk/'
+        }
+      ]
     },
     {
-      name: '生命線',
-      number: '1995',
-      description: '24小時心理諮詢熱線',
-      link: 'https://www.life1995.org.tw/'
+      category: t('resources.categories.audio'),
+      icon: Headphones,
+      color: 'from-mindful-blue to-mindful-green',
+      items: [
+        {
+          title: 'YouTube: 10 Minute Guided Meditation',
+          description: 'Free guided meditation videos for beginners and experienced practitioners.',
+          link: 'https://www.youtube.com/results?search_query=10+minute+guided+meditation'
+        },
+        {
+          title: 'YouTube: Sleep Meditation',
+          description: 'Relaxing guided meditations to help you fall asleep.',
+          link: 'https://www.youtube.com/results?search_query=sleep+meditation+guided'
+        },
+        {
+          title: 'YouTube: Breathing Exercises',
+          description: 'Various breathing techniques for relaxation and stress relief.',
+          link: 'https://www.youtube.com/results?search_query=breathing+exercises+for+relaxation'
+        },
+        {
+          title: 'Spotify: Meditation Music Playlists',
+          description: 'Free meditation and relaxation music on Spotify.',
+          link: 'https://open.spotify.com/search/meditation%20music'
+        }
+      ]
     },
     {
-      name: '張老師專線',
-      number: '1980',
-      description: '心理輔導與諮詢服務',
-      link: 'https://www.1980.org.tw/'
+      category: t('resources.categories.videos'),
+      icon: Video,
+      color: 'from-mindful-green to-mindful-pink',
+      items: [
+        {
+          title: 'TED: How to Make Stress Your Friend',
+          description: 'Dr. Kelly McGonigal\'s inspiring talk on stress management.',
+          link: 'https://www.ted.com/talks/kelly_mcgonigal_how_to_make_stress_your_friend'
+        },
+        {
+          title: 'TED: Depression, the Secret We Share',
+          description: 'Andrew Solomon\'s profound insights on fighting depression.',
+          link: 'https://www.ted.com/talks/andrew_solomon_depression_the_secret_we_share'
+        },
+        {
+          title: 'YouTube: Yoga for Beginners',
+          description: 'Beginner-friendly yoga and stretching videos.',
+          link: 'https://www.youtube.com/results?search_query=yoga+for+beginners'
+        },
+        {
+          title: 'Coursera: The Science of Well-Being',
+          description: 'Free Yale University course on increasing happiness.',
+          link: 'https://www.coursera.org/learn/the-science-of-well-being'
+        }
+      ]
     }
   ]
 
-  const books = [
+  const helplines = language === 'zh-TW' ? [
+    {
+      name: t('resources.hotlines.suicide.name'),
+      number: t('resources.hotlines.suicide.number'),
+      description: t('resources.hotlines.suicide.description'),
+      link: 'https://www.mohw.gov.tw/cp-88-237-1.html'
+    },
+    {
+      name: t('resources.hotlines.lifeline.name'),
+      number: t('resources.hotlines.lifeline.number'),
+      description: t('resources.hotlines.lifeline.description'),
+      link: 'https://www.life1995.org.tw/'
+    },
+    {
+      name: t('resources.hotlines.teacher.name'),
+      number: t('resources.hotlines.teacher.number'),
+      description: t('resources.hotlines.teacher.description'),
+      link: 'https://www.1980.org.tw/'
+    }
+  ] : [
+    {
+      name: t('resources.hotlines.suicide.name'),
+      number: t('resources.hotlines.suicide.number'),
+      description: t('resources.hotlines.suicide.description'),
+      link: 'https://988lifeline.org/'
+    },
+    {
+      name: t('resources.hotlines.lifeline.name'),
+      number: t('resources.hotlines.lifeline.number'),
+      description: t('resources.hotlines.lifeline.description'),
+      link: 'https://www.crisistextline.org/'
+    },
+    {
+      name: t('resources.hotlines.teacher.name'),
+      number: t('resources.hotlines.teacher.number'),
+      description: t('resources.hotlines.teacher.description'),
+      link: 'https://www.samhsa.gov/find-help/national-helpline'
+    }
+  ]
+
+  const books = language === 'zh-TW' ? [
     {
       title: '被討厭的勇氣',
       author: '岸見一郎',
@@ -132,6 +236,31 @@ const Resources = () => {
       emoji: '📕',
       link: 'https://www.books.com.tw/products/0010849326'
     }
+  ] : [
+    {
+      title: 'The Courage to Be Disliked',
+      author: 'Ichiro Kishimi',
+      emoji: '📘',
+      link: 'https://www.amazon.com/Courage-Be-Disliked-Phenomenon-Happiness/dp/1501197274'
+    },
+    {
+      title: 'Atomic Habits',
+      author: 'James Clear',
+      emoji: '📗',
+      link: 'https://www.amazon.com/Atomic-Habits-Proven-Build-Break/dp/0735211299'
+    },
+    {
+      title: 'Maybe You Should Talk to Someone',
+      author: 'Lori Gottlieb',
+      emoji: '📙',
+      link: 'https://www.amazon.com/Maybe-You-Should-Talk-Someone/dp/1328662055'
+    },
+    {
+      title: 'The Body Keeps the Score',
+      author: 'Bessel van der Kolk',
+      emoji: '📕',
+      link: 'https://www.amazon.com/Body-Keeps-Score-Healing-Trauma/dp/0143127748'
+    }
   ]
 
   const handleLinkClick = (url) => {
@@ -144,9 +273,9 @@ const Resources = () => {
       <div className="glass-card p-6">
         <div className="flex items-center gap-3 mb-2">
           <BookOpen className="w-8 h-8 text-mindful-green" />
-          <h1 className="text-3xl font-bold">資源庫</h1>
+          <h1 className="text-3xl font-bold">{t('resources.title')}</h1>
         </div>
-        <p className="text-gray-600">豐富的心理健康資源，全部都是真實可用的免費資源</p>
+        <p className="text-gray-600">{t('resources.subtitle')}</p>
       </div>
 
       {/* Resources by Category */}
@@ -187,8 +316,8 @@ const Resources = () => {
         <div className="flex items-center gap-3 mb-4">
           <Heart className="w-8 h-8 text-red-500" />
           <div>
-            <h2 className="text-xl font-semibold text-red-900">緊急求助專線</h2>
-            <p className="text-sm text-red-700">如果你需要立即協助，請撥打以下專線</p>
+            <h2 className="text-xl font-semibold text-red-900">{t('resources.emergencyHotlines')}</h2>
+            <p className="text-sm text-red-700">{t('resources.emergencySubtitle')}</p>
           </div>
         </div>
 
@@ -209,16 +338,15 @@ const Resources = () => {
 
         <div className="mt-4 p-4 bg-red-100 rounded-xl">
           <p className="text-sm text-red-900">
-            <strong>⚠️ 重要提醒：</strong>
-            本應用提供的建議和資源僅供參考，不能替代專業醫療協助。
-            如果你正經歷嚴重的心理健康問題或有自殺傾向，請立即尋求專業協助。
+            <strong>⚠️ </strong>
+            {t('resources.importantNotice')}
           </p>
         </div>
       </div>
 
       {/* Recommended Books */}
       <div className="glass-card p-6">
-        <h2 className="text-xl font-semibold mb-4">推薦書籍</h2>
+        <h2 className="text-xl font-semibold mb-4">{t('resources.recommendedBooks')}</h2>
         <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-4">
           {books.map((book, index) => (
             <button
@@ -234,29 +362,22 @@ const Resources = () => {
           ))}
         </div>
         <p className="text-xs text-gray-500 mt-4 text-center">
-          點擊書籍可前往博客來查看詳細資訊
+          {t('resources.clickToView')}
         </p>
       </div>
 
       {/* Additional Resources */}
       <div className="glass-card p-6">
-        <h2 className="text-xl font-semibold mb-4">其他實用資源</h2>
+        <h2 className="text-xl font-semibold mb-4">{t('resources.otherResources')}</h2>
         <div className="grid md:grid-cols-2 gap-4">
-          <button
-            onClick={() => handleLinkClick('https://www.commonhealth.com.tw/article/89302')}
-            className="bg-white/50 rounded-xl p-4 hover:shadow-lg transition-all text-left"
-          >
-            <h3 className="font-semibold mb-2">康健雜誌 - 情緒管理專區</h3>
-            <p className="text-sm text-gray-600 mb-2">情緒管理與心理健康的專業文章</p>
-            <ExternalLink className="w-4 h-4 text-gray-400" />
-          </button>
-
           <button
             onClick={() => handleLinkClick('https://www.calm.com/')}
             className="bg-white/50 rounded-xl p-4 hover:shadow-lg transition-all text-left"
           >
             <h3 className="font-semibold mb-2">Calm App</h3>
-            <p className="text-sm text-gray-600 mb-2">熱門冥想和睡眠應用程式（部分免費）</p>
+            <p className="text-sm text-gray-600 mb-2">
+              {language === 'zh-TW' ? '熱門冥想和睡眠應用程式（部分免費）' : 'Popular meditation and sleep app (partially free)'}
+            </p>
             <ExternalLink className="w-4 h-4 text-gray-400" />
           </button>
 
@@ -265,16 +386,9 @@ const Resources = () => {
             className="bg-white/50 rounded-xl p-4 hover:shadow-lg transition-all text-left"
           >
             <h3 className="font-semibold mb-2">Headspace</h3>
-            <p className="text-sm text-gray-600 mb-2">引導式冥想和正念練習（部分免費）</p>
-            <ExternalLink className="w-4 h-4 text-gray-400" />
-          </button>
-
-          <button
-            onClick={() => handleLinkClick('https://dep.mohw.gov.tw/DOMHAOH/np-326-107.html')}
-            className="bg-white/50 rounded-xl p-4 hover:shadow-lg transition-all text-left"
-          >
-            <h3 className="font-semibold mb-2">衛福部心理健康促進專區</h3>
-            <p className="text-sm text-gray-600 mb-2">心理健康司官方網站，提供完整心理健康資訊</p>
+            <p className="text-sm text-gray-600 mb-2">
+              {language === 'zh-TW' ? '引導式冥想和正念練習（部分免費）' : 'Guided meditation and mindfulness exercises (partially free)'}
+            </p>
             <ExternalLink className="w-4 h-4 text-gray-400" />
           </button>
         </div>

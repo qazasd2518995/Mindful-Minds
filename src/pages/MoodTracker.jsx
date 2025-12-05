@@ -1,24 +1,23 @@
 import React, { useState, useEffect } from 'react'
 import { Smile, Meh, Frown, Heart, Calendar, Plus, Trash2 } from 'lucide-react'
+import { useTranslation } from '../hooks/useTranslation'
 
 const MoodTracker = ({ user }) => {
+  const { t, language } = useTranslation()
   const [entries, setEntries] = useState([])
   const [selectedMood, setSelectedMood] = useState(3)
   const [note, setNote] = useState('')
   const [tags, setTags] = useState([])
 
   const moodOptions = [
-    { value: 5, emoji: '😄', label: '非常好', color: 'text-green-500' },
-    { value: 4, emoji: '🙂', label: '還不錯', color: 'text-blue-500' },
-    { value: 3, emoji: '😐', label: '普通', color: 'text-yellow-500' },
-    { value: 2, emoji: '😔', label: '不太好', color: 'text-orange-500' },
-    { value: 1, emoji: '😢', label: '很糟糕', color: 'text-red-500' }
+    { value: 5, emoji: '😄', label: t('moodTracker.moods.veryGood'), color: 'text-green-500' },
+    { value: 4, emoji: '🙂', label: t('moodTracker.moods.good'), color: 'text-blue-500' },
+    { value: 3, emoji: '😐', label: t('moodTracker.moods.neutral'), color: 'text-yellow-500' },
+    { value: 2, emoji: '😔', label: t('moodTracker.moods.notGood'), color: 'text-orange-500' },
+    { value: 1, emoji: '😢', label: t('moodTracker.moods.bad'), color: 'text-red-500' }
   ]
 
-  const availableTags = [
-    '工作', '家庭', '朋友', '健康', '運動',
-    '睡眠', '飲食', '焦慮', '壓力', '快樂'
-  ]
+  const availableTags = t('moodTracker.tags')
 
   useEffect(() => {
     const saved = localStorage.getItem(`mood-entries-${user?.username}`)
@@ -66,14 +65,14 @@ const MoodTracker = ({ user }) => {
       <div className="glass-card p-6">
         <div className="flex items-center gap-3 mb-2">
           <Heart className="w-8 h-8 text-mindful-pink" />
-          <h1 className="text-3xl font-bold">情緒追蹤</h1>
+          <h1 className="text-3xl font-bold">{t('moodTracker.title')}</h1>
         </div>
-        <p className="text-gray-600">記錄你的心情，了解自己的情緒模式</p>
+        <p className="text-gray-600">{t('moodTracker.subtitle')}</p>
       </div>
 
       {/* New Entry Form */}
       <div className="glass-card p-6">
-        <h2 className="text-xl font-semibold mb-4">今天心情如何？</h2>
+        <h2 className="text-xl font-semibold mb-4">{t('moodTracker.howAreYou')}</h2>
 
         {/* Mood Selection */}
         <div className="mb-6">
@@ -101,7 +100,7 @@ const MoodTracker = ({ user }) => {
 
         {/* Tags */}
         <div className="mb-4">
-          <p className="text-sm font-medium mb-2">相關標籤（可選）</p>
+          <p className="text-sm font-medium mb-2">{t('moodTracker.relatedTags')}</p>
           <div className="flex flex-wrap gap-2">
             {availableTags.map(tag => (
               <button
@@ -124,7 +123,7 @@ const MoodTracker = ({ user }) => {
           <textarea
             value={note}
             onChange={(e) => setNote(e.target.value)}
-            placeholder="寫下一些想法或發生的事情（可選）..."
+            placeholder={t('moodTracker.notePlaceholder')}
             className="input-field resize-none"
             rows="3"
           />
@@ -132,7 +131,7 @@ const MoodTracker = ({ user }) => {
 
         <button onClick={saveEntry} className="btn-primary w-full">
           <Plus className="w-5 h-5 inline mr-2" />
-          儲存記錄
+          {t('moodTracker.saveRecord')}
         </button>
       </div>
 
@@ -140,13 +139,13 @@ const MoodTracker = ({ user }) => {
       <div className="glass-card p-6">
         <h2 className="text-xl font-semibold mb-4 flex items-center gap-2">
           <Calendar className="w-6 h-6" />
-          歷史記錄
+          {t('moodTracker.history')}
         </h2>
 
         {entries.length === 0 ? (
           <div className="text-center py-12 text-gray-400">
             <Meh className="w-16 h-16 mx-auto mb-4 opacity-50" />
-            <p>還沒有記錄，開始記錄你的第一個心情吧！</p>
+            <p>{t('moodTracker.noRecords')}</p>
           </div>
         ) : (
           <div className="space-y-4">
@@ -160,7 +159,7 @@ const MoodTracker = ({ user }) => {
                       <div>
                         <p className="font-semibold">{moodOption?.label}</p>
                         <p className="text-sm text-gray-500">
-                          {new Date(entry.date).toLocaleString('zh-TW', {
+                          {new Date(entry.date).toLocaleString(language === 'zh-TW' ? 'zh-TW' : 'en-US', {
                             month: 'long',
                             day: 'numeric',
                             hour: '2-digit',

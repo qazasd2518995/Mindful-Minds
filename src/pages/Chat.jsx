@@ -1,7 +1,9 @@
 import React, { useState, useEffect, useRef } from 'react'
 import { Send, Bot, User, Loader2, Sparkles } from 'lucide-react'
+import { useTranslation } from '../hooks/useTranslation'
 
 const Chat = ({ user }) => {
+  const { t, language } = useTranslation()
   const [messages, setMessages] = useState([])
   const [input, setInput] = useState('')
   const [isLoading, setIsLoading] = useState(false)
@@ -16,11 +18,11 @@ const Chat = ({ user }) => {
       // Welcome message
       setMessages([{
         role: 'assistant',
-        content: `你好 ${user?.username}！我是你的心靈健康助手。我在這裡傾聽你的想法和感受，提供支持和建議。有什麼我可以幫助你的嗎？`,
+        content: t('chat.welcomeMessage', { name: user?.username }),
         timestamp: new Date().toISOString()
       }])
     }
-  }, [user])
+  }, [user, language])
 
   useEffect(() => {
     messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' })
@@ -77,7 +79,7 @@ const Chat = ({ user }) => {
       console.error('Error:', error)
       const errorMessage = {
         role: 'assistant',
-        content: '抱歉，我現在無法回應。請稍後再試。',
+        content: t('chat.errorMessage'),
         timestamp: new Date().toISOString()
       }
       setMessages(prev => [...prev, errorMessage])
@@ -93,12 +95,7 @@ const Chat = ({ user }) => {
     }
   }
 
-  const quickPrompts = [
-    '我感到焦慮，該怎麼辦？',
-    '如何改善睡眠品質？',
-    '幫我做呼吸練習',
-    '我需要一些正能量',
-  ]
+  const quickPrompts = t('chat.prompts')
 
   return (
     <div className="h-[calc(100vh-2rem)] flex flex-col">
@@ -109,10 +106,10 @@ const Chat = ({ user }) => {
             <Bot className="w-7 h-7 text-white" />
           </div>
           <div>
-            <h1 className="text-2xl font-bold">AI 心靈助手</h1>
+            <h1 className="text-2xl font-bold">{t('chat.title')}</h1>
             <p className="text-sm text-gray-500 flex items-center gap-1">
               <Sparkles className="w-4 h-4" />
-              隨時為你提供支持與建議
+              {t('chat.subtitle')}
             </p>
           </div>
         </div>
@@ -146,7 +143,7 @@ const Chat = ({ user }) => {
                   <p className="whitespace-pre-wrap">{message.content}</p>
                 </div>
                 <p className="text-xs text-gray-400 mt-1 px-2">
-                  {new Date(message.timestamp).toLocaleTimeString('zh-TW', {
+                  {new Date(message.timestamp).toLocaleTimeString(language === 'zh-TW' ? 'zh-TW' : 'en-US', {
                     hour: '2-digit',
                     minute: '2-digit'
                   })}
@@ -173,7 +170,7 @@ const Chat = ({ user }) => {
       {/* Quick Prompts */}
       {messages.length <= 1 && (
         <div className="glass-card p-4 mb-4">
-          <p className="text-sm text-gray-600 mb-2">快速提問：</p>
+          <p className="text-sm text-gray-600 mb-2">{t('chat.quickPrompts')}</p>
           <div className="flex flex-wrap gap-2">
             {quickPrompts.map((prompt, index) => (
               <button
@@ -195,7 +192,7 @@ const Chat = ({ user }) => {
             value={input}
             onChange={(e) => setInput(e.target.value)}
             onKeyPress={handleKeyPress}
-            placeholder="輸入你的想法或問題..."
+            placeholder={t('chat.placeholder')}
             className="flex-1 input-field resize-none"
             rows="1"
             style={{ minHeight: '48px', maxHeight: '120px' }}

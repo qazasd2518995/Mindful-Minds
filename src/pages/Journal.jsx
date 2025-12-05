@@ -1,7 +1,9 @@
 import React, { useState, useEffect } from 'react'
 import { BookOpen, Plus, Trash2, Edit3, Save, X } from 'lucide-react'
+import { useTranslation } from '../hooks/useTranslation'
 
 const Journal = ({ user }) => {
+  const { t, language } = useTranslation()
   const [entries, setEntries] = useState([])
   const [isWriting, setIsWriting] = useState(false)
   const [currentEntry, setCurrentEntry] = useState({ title: '', content: '' })
@@ -50,7 +52,7 @@ const Journal = ({ user }) => {
   }
 
   const handleDelete = (id) => {
-    if (confirm('確定要刪除這篇日記嗎？')) {
+    if (confirm(t('journal.confirmDelete'))) {
       saveEntries(entries.filter(e => e.id !== id))
     }
   }
@@ -61,13 +63,7 @@ const Journal = ({ user }) => {
     setEditingId(null)
   }
 
-  const prompts = [
-    '今天發生了什麼讓你感恩的事？',
-    '你今天學到了什麼？',
-    '今天有什麼值得慶祝的小事？',
-    '什麼事情讓你感到快樂？',
-    '你今天幫助了誰？'
-  ]
+  const prompts = t('journal.prompts')
 
   return (
     <div className="space-y-6">
@@ -77,14 +73,14 @@ const Journal = ({ user }) => {
           <div>
             <div className="flex items-center gap-3 mb-2">
               <BookOpen className="w-8 h-8 text-mindful-orange" />
-              <h1 className="text-3xl font-bold">每日日記</h1>
+              <h1 className="text-3xl font-bold">{t('journal.title')}</h1>
             </div>
-            <p className="text-gray-600">記錄生活點滴，培養感恩的心</p>
+            <p className="text-gray-600">{t('journal.subtitle')}</p>
           </div>
           {!isWriting && (
             <button onClick={() => setIsWriting(true)} className="btn-primary">
               <Plus className="w-5 h-5 inline mr-2" />
-              寫日記
+              {t('journal.writeJournal')}
             </button>
           )}
         </div>
@@ -96,7 +92,7 @@ const Journal = ({ user }) => {
           <div className="mb-4">
             <input
               type="text"
-              placeholder="標題（可選）"
+              placeholder={t('journal.titlePlaceholder')}
               value={currentEntry.title}
               onChange={(e) => setCurrentEntry({ ...currentEntry, title: e.target.value })}
               className="input-field text-xl font-semibold"
@@ -104,7 +100,7 @@ const Journal = ({ user }) => {
           </div>
           <div className="mb-4">
             <textarea
-              placeholder="寫下你的想法..."
+              placeholder={t('journal.contentPlaceholder')}
               value={currentEntry.content}
               onChange={(e) => setCurrentEntry({ ...currentEntry, content: e.target.value })}
               className="input-field resize-none"
@@ -116,7 +112,7 @@ const Journal = ({ user }) => {
           {/* Writing Prompts */}
           {!currentEntry.content && (
             <div className="mb-4">
-              <p className="text-sm font-medium mb-2 text-gray-600">靈感提示：</p>
+              <p className="text-sm font-medium mb-2 text-gray-600">{t('journal.inspirationPrompts')}</p>
               <div className="flex flex-wrap gap-2">
                 {prompts.map((prompt, index) => (
                   <button
@@ -134,7 +130,7 @@ const Journal = ({ user }) => {
           <div className="flex gap-3">
             <button onClick={handleSave} className="btn-primary flex-1">
               <Save className="w-5 h-5 inline mr-2" />
-              儲存
+              {t('common.save')}
             </button>
             <button onClick={handleCancel} className="btn-secondary">
               <X className="w-5 h-5" />
@@ -145,13 +141,13 @@ const Journal = ({ user }) => {
 
       {/* Entries List */}
       <div className="glass-card p-6">
-        <h2 className="text-xl font-semibold mb-4">過往日記</h2>
+        <h2 className="text-xl font-semibold mb-4">{t('journal.pastJournals')}</h2>
 
         {entries.length === 0 ? (
           <div className="text-center py-12 text-gray-400">
             <BookOpen className="w-16 h-16 mx-auto mb-4 opacity-50" />
-            <p>還沒有日記記錄</p>
-            <p className="text-sm mt-2">點擊上方按鈕開始寫日記吧！</p>
+            <p>{t('journal.noJournals')}</p>
+            <p className="text-sm mt-2">{t('journal.startWriting')}</p>
           </div>
         ) : (
           <div className="space-y-4">
@@ -163,7 +159,7 @@ const Journal = ({ user }) => {
                       <h3 className="text-lg font-semibold mb-2">{entry.title}</h3>
                     )}
                     <p className="text-sm text-gray-500">
-                      {new Date(entry.date).toLocaleDateString('zh-TW', {
+                      {new Date(entry.date).toLocaleDateString(language === 'zh-TW' ? 'zh-TW' : 'en-US', {
                         year: 'numeric',
                         month: 'long',
                         day: 'numeric',
@@ -197,14 +193,11 @@ const Journal = ({ user }) => {
 
       {/* Benefits */}
       <div className="glass-card p-6 bg-gradient-to-r from-mindful-orange/20 to-mindful-pink/20">
-        <h3 className="font-semibold mb-3">寫日記的好處</h3>
+        <h3 className="font-semibold mb-3">{t('journal.benefits.title')}</h3>
         <div className="grid md:grid-cols-2 gap-3 text-sm text-gray-700">
-          <div>• 幫助整理思緒和情緒</div>
-          <div>• 培養感恩的心態</div>
-          <div>• 記錄人生重要時刻</div>
-          <div>• 促進自我反思和成長</div>
-          <div>• 減輕壓力和焦慮</div>
-          <div>• 提升幸福感</div>
+          {t('journal.benefits.items').map((benefit, index) => (
+            <div key={index}>• {benefit}</div>
+          ))}
         </div>
       </div>
     </div>

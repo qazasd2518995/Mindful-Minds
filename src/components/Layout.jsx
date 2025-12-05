@@ -4,18 +4,21 @@ import {
   Home, MessageCircle, Heart, Compass, BookOpen,
   BarChart3, Menu, X, LogOut
 } from 'lucide-react'
+import LanguageToggle from './LanguageToggle'
+import { useTranslation } from '../hooks/useTranslation'
 
 const Layout = ({ user }) => {
   const [sidebarOpen, setSidebarOpen] = useState(false)
   const location = useLocation()
+  const { t } = useTranslation()
 
   const menuItems = [
-    { path: '/dashboard', icon: Home, label: '儀表板' },
-    { path: '/chat', icon: MessageCircle, label: 'AI 助手' },
-    { path: '/mood', icon: Heart, label: '情緒追蹤' },
-    { path: '/meditation', icon: Compass, label: '冥想練習' },
-    { path: '/journal', icon: BookOpen, label: '每日日記' },
-    { path: '/resources', icon: BarChart3, label: '資源庫' },
+    { path: '/dashboard', icon: Home, label: t('nav.dashboard') },
+    { path: '/chat', icon: MessageCircle, label: t('nav.aiAssistant') },
+    { path: '/mood', icon: Heart, label: t('nav.moodTracker') },
+    { path: '/meditation', icon: Compass, label: t('nav.meditation') },
+    { path: '/journal', icon: BookOpen, label: t('nav.journal') },
+    { path: '/resources', icon: BarChart3, label: t('nav.resources') },
   ]
 
   const handleLogout = () => {
@@ -48,6 +51,11 @@ const Layout = ({ user }) => {
           </button>
         </div>
 
+        {/* Language Toggle */}
+        <div className="mb-4">
+          <LanguageToggle className="w-full justify-center" />
+        </div>
+
         {/* User Profile */}
         <div className="mb-8 p-4 bg-gradient-to-r from-mindful-purple/10 to-mindful-blue/10 rounded-xl">
           <div className="flex items-center gap-3">
@@ -56,7 +64,7 @@ const Layout = ({ user }) => {
             </div>
             <div>
               <p className="font-semibold">{user?.username}</p>
-              <p className="text-xs text-gray-500">持續照顧自己</p>
+              <p className="text-xs text-gray-500">{t('layout.keepCaring')}</p>
             </div>
           </div>
         </div>
@@ -92,7 +100,7 @@ const Layout = ({ user }) => {
           className="w-full mt-auto pt-6 flex items-center gap-3 px-4 py-3 text-red-500 hover:bg-red-50 rounded-xl transition-all"
         >
           <LogOut className="w-5 h-5" />
-          <span className="font-medium">登出</span>
+          <span className="font-medium">{t('common.logout')}</span>
         </button>
       </aside>
 

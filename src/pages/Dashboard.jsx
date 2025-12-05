@@ -1,8 +1,10 @@
 import React, { useState, useEffect } from 'react'
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, LineChart, Line } from 'recharts'
 import { TrendingUp, Calendar, Heart, BookOpen, Award, Smile } from 'lucide-react'
+import { useTranslation } from '../hooks/useTranslation'
 
 const Dashboard = ({ user }) => {
+  const { t, language } = useTranslation()
   const [stats, setStats] = useState({
     totalEntries: 0,
     streakDays: 0,
@@ -40,12 +42,12 @@ const Dashboard = ({ user }) => {
         ? dayEntries.reduce((sum, e) => sum + e.mood, 0) / dayEntries.length
         : 0
       return {
-        date: new Date(date).toLocaleDateString('zh-TW', { month: 'short', day: 'numeric' }),
+        date: new Date(date).toLocaleDateString(language === 'zh-TW' ? 'zh-TW' : 'en-US', { month: 'short', day: 'numeric' }),
         mood: Math.round(avgMood * 10) / 10
       }
     })
     setMoodData(chartData)
-  }, [user])
+  }, [user, language])
 
   const calculateStreak = (entries) => {
     if (entries.length === 0) return 0
@@ -82,26 +84,26 @@ const Dashboard = ({ user }) => {
   const statCards = [
     {
       icon: BookOpen,
-      label: '日記條目',
+      label: t('dashboard.journalEntries'),
       value: stats.totalEntries,
       color: 'from-mindful-purple to-mindful-pink'
     },
     {
       icon: Calendar,
-      label: '連續天數',
-      value: `${stats.streakDays} 天`,
+      label: t('dashboard.streakDays'),
+      value: `${stats.streakDays} ${t('common.days')}`,
       color: 'from-mindful-blue to-mindful-green'
     },
     {
       icon: Heart,
-      label: '平均心情',
+      label: t('dashboard.averageMood'),
       value: `${stats.moodAverage}/5`,
       color: 'from-mindful-pink to-mindful-orange'
     },
     {
       icon: Award,
-      label: '冥想時長',
-      value: `${stats.meditationMinutes} 分鐘`,
+      label: t('dashboard.meditationTime'),
+      value: `${stats.meditationMinutes} ${t('common.minutes')}`,
       color: 'from-mindful-green to-mindful-blue'
     }
   ]
@@ -119,9 +121,9 @@ const Dashboard = ({ user }) => {
       {/* Header */}
       <div className="glass-card p-6">
         <h1 className="text-3xl font-bold mb-2">
-          歡迎回來，{user?.username}！
+          {t('dashboard.welcome', { name: user?.username })}
         </h1>
-        <p className="text-gray-600">這是你的心靈健康儀表板</p>
+        <p className="text-gray-600">{t('dashboard.subtitle')}</p>
       </div>
 
       {/* Stats Grid */}
@@ -144,7 +146,7 @@ const Dashboard = ({ user }) => {
       <div className="glass-card p-6">
         <div className="flex items-center gap-2 mb-6">
           <TrendingUp className="w-6 h-6 text-mindful-purple" />
-          <h2 className="text-xl font-bold">過去 7 天的心情趨勢</h2>
+          <h2 className="text-xl font-bold">{t('dashboard.moodTrend')}</h2>
         </div>
         <ResponsiveContainer width="100%" height={300}>
           <LineChart data={moodData}>
@@ -179,22 +181,22 @@ const Dashboard = ({ user }) => {
 
       {/* Quick Actions */}
       <div className="glass-card p-6">
-        <h2 className="text-xl font-bold mb-4">今天想做什麼？</h2>
+        <h2 className="text-xl font-bold mb-4">{t('dashboard.whatToDo')}</h2>
         <div className="grid md:grid-cols-3 gap-4">
           <a href="/chat" className="p-4 bg-gradient-to-r from-mindful-purple/10 to-mindful-blue/10 rounded-xl hover:shadow-lg transition-all">
             <Smile className="w-8 h-8 text-mindful-purple mb-2" />
-            <h3 className="font-semibold mb-1">與 AI 聊天</h3>
-            <p className="text-sm text-gray-600">分享你的想法和感受</p>
+            <h3 className="font-semibold mb-1">{t('dashboard.chatWithAI')}</h3>
+            <p className="text-sm text-gray-600">{t('dashboard.shareThoughts')}</p>
           </a>
           <a href="/mood" className="p-4 bg-gradient-to-r from-mindful-pink/10 to-mindful-orange/10 rounded-xl hover:shadow-lg transition-all">
             <Heart className="w-8 h-8 text-mindful-pink mb-2" />
-            <h3 className="font-semibold mb-1">記錄心情</h3>
-            <p className="text-sm text-gray-600">追蹤你的情緒狀態</p>
+            <h3 className="font-semibold mb-1">{t('dashboard.recordMood')}</h3>
+            <p className="text-sm text-gray-600">{t('dashboard.trackEmotions')}</p>
           </a>
           <a href="/meditation" className="p-4 bg-gradient-to-r from-mindful-green/10 to-mindful-blue/10 rounded-xl hover:shadow-lg transition-all">
             <Award className="w-8 h-8 text-mindful-green mb-2" />
-            <h3 className="font-semibold mb-1">開始冥想</h3>
-            <p className="text-sm text-gray-600">放鬆身心，找回平靜</p>
+            <h3 className="font-semibold mb-1">{t('dashboard.startMeditation')}</h3>
+            <p className="text-sm text-gray-600">{t('dashboard.findPeace')}</p>
           </a>
         </div>
       </div>
@@ -202,7 +204,7 @@ const Dashboard = ({ user }) => {
       {/* Motivation */}
       <div className="glass-card p-6 bg-gradient-to-r from-mindful-purple/20 to-mindful-blue/20">
         <p className="text-lg text-center font-medium">
-          "照顧好自己的心靈，就是給自己最好的禮物。" 💝
+          {t('dashboard.motivation')}
         </p>
       </div>
     </div>
